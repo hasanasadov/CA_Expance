@@ -25,6 +25,17 @@ const getExpenseById = async (req, res) => {
   }
 };
 
+const getExpenseByCategoryId = async (req, res) => {
+  try {
+    const expenses = await Expense.find({ category: req.params.id }).populate(
+      "category"
+    );
+    res.status(200).json({ success: true, data: expenses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 const updateExpense = async (req, res) => {
   try {
     const { price, category } = req.body;
@@ -156,6 +167,7 @@ const deleteExpense = async (req, res) => {
 module.exports = {
   getAllExpenses,
   getExpenseById,
+  getExpenseByCategoryId,
   updateExpense,
   postExpense,
   addCategoryToExpense,
